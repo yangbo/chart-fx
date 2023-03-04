@@ -1,0 +1,31 @@
+================================================
+塔尔旺科技 ChartFX 开发说明
+================================================
+
+塔尔旺科技的开发主分支是 **telecwin_main**，请公司同事在此分支上开发。
+
+
+发布到塔尔旺公司maven仓库
+==============================================
+
+选择 **releaseTelecwin** profile 然后执行 **deploy** 阶段。
+
+
+maven 教程
+==============================================
+
+Maven通过lifecycle、phase和goal来提供标准的构建流程。
+
+最常用的构建命令是指定phase，然后让Maven执行到指定的phase::
+
+    mvn clean
+    mvn clean compile
+    mvn clean test
+    mvn clean package
+
+通常情况，我们总是执行phase默认绑定的goal，因此不必指定goal。
+
+详细内容请参考 maven教程_.
+
+.. _maven教程 : https://www.liaoxuefeng.com/wiki/1252599548343744/1309301196980257
+

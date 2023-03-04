@@ -29,7 +29,7 @@
     </modules>
 
     <properties>
-        <revision>master</revision>
+        <revision>11.2.7_telecwin</revision>
         <changelist>-SNAPSHOT</changelist>
         <sha1 />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -417,6 +417,36 @@
                 <snapshotRepository>
                     <id>ossrh</id>
                     <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>releaseTelecwin</id>
+            <activation>
+                <property>
+                    <name>release</name>
+                    <value>telecwin</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.4</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>telecwin-private</serverId>
+                            <nexusUrl>http://maven.telecwin.com/telecwin</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>telecwin-dev</id>
+                    <url>http://maven.telecwin.com/snapshots</url>
                 </snapshotRepository>
             </distributionManagement>
         </profile>

@@ -66,7 +66,7 @@ public interface DataSet extends EventSource, Serializable {
 
     /**
      * Gets the index of the data point closest to the given 'value' coordinate. The index returned may be less then
-     * zero or larger the the number of data points in the data set, if the x coordinate lies outside the range of the
+     * zero or larger than the number of data points in the data set, if the x coordinate lies outside the range of the
      * data set.
      *
      * @param dimIndex the dimension index (ie. '0' equals 'X', '1' equals 'Y')

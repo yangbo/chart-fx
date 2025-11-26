@@ -168,3 +168,8 @@
 .chart-horizontal-zero-line {
   -fx-stroke: derive(-fx-text-background-color, 40%);
 }
+
+.chart-border-lines {
+    -fx-stroke: black;
+    -fx-stroke-width: 2px;
+}

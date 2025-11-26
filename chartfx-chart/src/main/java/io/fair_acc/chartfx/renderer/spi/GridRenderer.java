@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,6 +45,7 @@ public class GridRenderer extends Pane implements Renderer {
     private static final String STYLE_CLASS_MINOR_GRID_LINE_H = "chart-minor-horizontal-lines";
     private static final String STYLE_CLASS_MINOR_GRID_LINE_V = "chart-minor-vertical-lines";
     private static final String STYLE_CLASS_GRID_ON_TOP = "chart-grid-line-on-top";
+    private static final String STYLE_CLASS_CHART_BORDER = "chart-border-lines";
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("withMinor");
 
     private static final double[] DEFAULT_GRID_DASH_PATTERM = { 4.5, 2.5 };
@@ -55,8 +57,10 @@ public class GridRenderer extends Pane implements Renderer {
     private final Line horMinorGridStyleNode;
     private final Line verMinorGridStyleNode;
     private final Line drawGridOnTopNode;
+    private final Line borderStyleNode;
     private final Group gridStyleNodes = new Group();
     protected final ObservableList<Axis> axesList = FXCollections.observableList(new NoDuplicatesList<>());
+    private final BooleanProperty borderVisible = new SimpleBooleanProperty(this, "borderVisible", false);
 
     public GridRenderer() {
         super();
@@ -85,8 +89,11 @@ public class GridRenderer extends Pane implements Renderer {
         drawGridOnTopNode.getStyleClass().add(GridRenderer.STYLE_CLASS_GRID_ON_TOP);
         drawGridOnTopNode.setVisible(true);
 
+        borderStyleNode = new Line();
+        borderStyleNode.getStyleClass().add(GridRenderer.STYLE_CLASS_CHART_BORDER);
+
         gridStyleNodes.getChildren().addAll(horMajorGridStyleNode, verMajorGridStyleNode, horMinorGridStyleNode,
-                verMinorGridStyleNode, drawGridOnTopNode);
+                verMinorGridStyleNode, drawGridOnTopNode, borderStyleNode);
 
         getChildren().add(gridStyleNodes);
         final Scene scene = new Scene(this);
@@ -134,6 +141,18 @@ public class GridRenderer extends Pane implements Renderer {
         drawVerticalMinorGridLines(gc, xAxis, xAxisWidth, yAxisHeightSnapped);
         drawHorizontalMajorGridLines(gc, yAxis, xAxisWidthSnapped, yAxisHeight);
         drawHorizontalMinorGridLines(gc, yAxis, xAxisWidthSnapped, yAxisHeight);
+
+        if (isBorderVisible()) {
+            applyGraphicsStyleFromLineStyle(gc, borderStyleNode);
+            gc.setLineDashes(); // 确保是实线
+
+            final double x = snap(0);
+            final double y = snap(0);
+            final double width = snap(xAxisWidth - 1) - x;
+            final double height = snap(yAxisHeight - 1) - y;
+            gc.strokeRect(x, y, width, height); // 绘制完整的四边矩形
+        }
+
         gc.restore();
     }
 
@@ -468,6 +487,29 @@ public class GridRenderer extends Pane implements Renderer {
      */
     public final BooleanProperty verticalMinorGridLinesVisibleProperty() {
         return verMinorGridStyleNode.visibleProperty();
+    }
+
+    /**
+     * @return true if the chart border is visible
+     */
+    public boolean isBorderVisible() {
+        return borderVisible.get();
+    }
+
+    /**
+     * Sets whether the chart border should be drawn.
+     *
+     * @param visible true to draw the border, false otherwise
+     */
+    public void setBorderVisible(boolean visible) {
+        borderVisible.set(visible);
+    }
+
+    /**
+     * @return the chart border visibility property
+     */
+    public BooleanProperty borderVisibleProperty() {
+        return borderVisible;
     }
 
     protected static void applyGraphicsStyleFromLineStyle(final GraphicsContext gc, final Line style) {

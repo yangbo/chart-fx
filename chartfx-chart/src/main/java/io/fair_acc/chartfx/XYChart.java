@@ -57,6 +57,7 @@ public class XYChart extends Chart {
     protected final BooleanProperty polarPlot = new SimpleBooleanProperty(this, "polarPlot", false);
     private final ObjectProperty<PolarTickStep> polarStepSize = new SimpleObjectProperty<>(PolarTickStep.THIRTY);
     private final GridRenderer gridRenderer = new GridRenderer();
+    private final BooleanProperty chartBorderVisible = new SimpleBooleanProperty(this, "chartBorderVisible", false);
     protected final ChangeListener<? super Boolean> gridLineVisibilitychange = (ob, o, n) -> requestLayout();
     private long lastCanvasUpdate;
     private boolean callCanvasUpdateLater;
@@ -103,6 +104,7 @@ public class XYChart extends Chart {
         gridRenderer.getHorizontalMinorGrid().visibleProperty().addListener(gridLineVisibilitychange);
         gridRenderer.getVerticalMinorGrid().visibleProperty().addListener(gridLineVisibilitychange);
         gridRenderer.drawOnTopProperty().addListener(gridLineVisibilitychange);
+        gridRenderer.borderVisibleProperty().bindBidirectional(chartBorderVisibleProperty());
 
         this.setAnimated(false);
         getRenderers().addListener(this::rendererChanged);
@@ -200,6 +202,29 @@ public class XYChart extends Chart {
      */
     public final boolean isVerticalGridLinesVisible() {
         return verticalGridLinesVisibleProperty().get();
+    }
+
+    /**
+     * @return true if the chart border is visible
+     */
+    public boolean isChartBorderVisible() {
+        return chartBorderVisible.get();
+    }
+
+    /**
+     * Sets whether the chart border should be drawn.
+     *
+     * @param visible true to draw the border, false otherwise
+     */
+    public void setChartBorderVisible(boolean visible) {
+        chartBorderVisible.set(visible);
+    }
+
+    /**
+     * @return the chart border visibility property
+     */
+    public BooleanProperty chartBorderVisibleProperty() {
+        return chartBorderVisible;
     }
 
     /**

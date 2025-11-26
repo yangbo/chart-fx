@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javafx.geometry.Insets;
+
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.CrosshairIndicator;
@@ -33,6 +35,8 @@ public class SimpleChartSample extends Application {
         yAxis.setAutoRangePadding(0.5); // here: 50% padding on top and bottom of axis
 
         final XYChart chart = new XYChart(new DefaultNumericAxis(), yAxis);
+        chart.setPadding(new Insets(10)); // 设置图表内边距
+        chart.setChartBorderVisible(true); // 显示图表边框
         chart.getPlugins().addAll(new Zoomer(), new CrosshairIndicator(), new EditAxis()); // standard plugin, useful for most cases
 
         final DoubleDataSet dataSet1 = new DoubleDataSet("data set #1");

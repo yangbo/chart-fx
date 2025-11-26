@@ -29,7 +29,7 @@
     </modules>
 
     <properties>
-        <revision>11.2.7_telecwin</revision>
+        <revision>11.2.8_telecwin</revision>
         <changelist>-SNAPSHOT</changelist>
         <sha1 />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

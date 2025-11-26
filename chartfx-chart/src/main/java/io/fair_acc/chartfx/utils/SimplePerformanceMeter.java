@@ -1,31 +1,21 @@
 package io.fair_acc.chartfx.utils;
 
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.Field;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.management.Attribute;
-import javax.management.AttributeList;
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-import javax.management.ReflectionException;
-
+import com.sun.management.OperatingSystemMXBean;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// import com.sun.javafx.perf.PerformanceTracker; // keep for the future in case this becomes public API
-import com.sun.management.OperatingSystemMXBean;
+import javax.management.*;
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.Field;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimplePerformanceMeter {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimplePerformanceMeter.class);
@@ -247,12 +237,13 @@ public class SimplePerformanceMeter {
         if (scene.getRoot() == null) {
             return false;
         }
-        try {
-            return dirtyNodesSize.getInt(scene) != 0 || dirtyRootBits.getInt(scene.getRoot()) != 0;
-        } catch (IllegalAccessException | IllegalArgumentException ignoreException) {
-            LOGGER.atError().setCause(ignoreException).log("cannot access scene root's dirtyBits field");
-            return true;
-        }
+        return true;
+//        try {
+//            return dirtyNodesSize.getInt(scene) != 0 || dirtyRootBits.getInt(scene.getRoot()) != 0;
+//        } catch (IllegalAccessException | IllegalArgumentException ignoreException) {
+//            LOGGER.atError().setCause(ignoreException).log("cannot access scene root's dirtyBits field");
+//            return true;
+//        }
         // alternate implementation (potential issues with Java Jigsaw (com.sun... dependency):
         // return !NodeHelper.isDirtyEmpty(scene.getRoot())
     }

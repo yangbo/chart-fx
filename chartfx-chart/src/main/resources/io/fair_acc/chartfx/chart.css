@@ -122,9 +122,9 @@
 }
 
 .chart-major-grid-lines {
-  -fx-stroke: derive(-fx-background, -10%);
-  -fx-stroke-dash-array: 4.5, 2.5;
-  -fx-stroke-width: 0.5;
+  -fx-stroke: rgb(104, 104, 104);
+  -fx-stroke-dash-array: 1 4;
+  -fx-stroke-width: 1;
   -fx-grid-on-top: true;
 }
 

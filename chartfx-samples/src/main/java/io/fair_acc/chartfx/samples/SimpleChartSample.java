@@ -105,7 +105,11 @@ public class SimpleChartSample extends Application {
         public DraggableLegendPlugin() {
             // Matlab 风格：白色背景，黑色细边框
             container.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 1px; -fx-border-style: solid; -fx-padding: 5px;");
-            legend.setVertical(true); // 垂直排列
+            
+            // 使用 Horizontal FlowPane 但设置极小的 WrapLength 来实现垂直堆叠且高度自适应
+            legend.setVertical(false);
+            legend.setPrefWrapLength(10);
+            
             // 确保图例背景透明，以便显示容器的背景
             legend.setStyle("-fx-background-color: transparent;");
 
@@ -149,9 +153,6 @@ public class SimpleChartSample extends Application {
 
             double chartWidth = getChart().getCanvas().getWidth();
             double legendWidth = container.getWidth();
-
-            LOGGER.atInfo().log("DEBUG: reposition() - chartWidth={}, legendWidth={}, prefWidth={}, isUserMoved={}",
-                    chartWidth, legendWidth, container.prefWidth(-1), isUserMoved);
 
             if (!isUserMoved) {
                 // 只有当宽度有效时才设置

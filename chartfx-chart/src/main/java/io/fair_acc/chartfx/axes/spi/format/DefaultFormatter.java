@@ -169,8 +169,13 @@ public class DefaultFormatter extends AbstractFormatter {
         // return labelCache.get(formatter, object.doubleValue());
         // return labelCache.get(formatter, object.doubleValue());
 
+        double val = object.doubleValue();
+        if (val == 0.0) {
+            val = 0.0; // fix for negative zero case (ie. -0.0 -> 0.0)
+        }
+
         if (isExponentialForm) {
-            return labelCache.get(myFormatter, object.doubleValue());
+            return labelCache.get(myFormatter, val);
         }
         final WeakHashMap<Number, String> hash = numberFormatCache.get(formatterPattern.hashCode());
         if (hash != null) {
@@ -180,7 +185,7 @@ public class DefaultFormatter extends AbstractFormatter {
             }
         }
         // couldn't find label in cache
-        final String retVal = String.format(formatterPattern, object.doubleValue());
+        final String retVal = String.format(formatterPattern, val);
         // add retVal to cache
         if (hash == null) {
             final WeakHashMap<Number, String> temp = new WeakHashMap<>();

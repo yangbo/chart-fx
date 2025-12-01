@@ -107,6 +107,33 @@ import javafx.geometry.Insets;
 chart.setPadding(new Insets(10));
 ```
 
+### 2.4 使用浮动图例 (DraggableLegendPlugin)
+
+如果您希望图例能够像 Matlab 那样悬浮在图表内部、支持鼠标拖拽，并且在窗口缩放时能自动吸附右上角，可以使用 `DraggableLegendPlugin`。
+
+#### 2.4.1 使用方法
+
+首先，您需要隐藏图表默认的固定图例，然后添加 `DraggableLegendPlugin` 插件。
+
+```java
+// 导入插件类
+import io.fair_acc.chartfx.samples.DraggableLegendPlugin;
+
+// 1. 隐藏默认图例
+chart.setLegendVisible(false);
+
+// 2. 添加浮动图例插件
+chart.getPlugins().add(new DraggableLegendPlugin());
+```
+
+#### 2.4.2 功能特性
+
+*   **自动定位**：图例初始会吸附在图表绘图区域的右上角。
+*   **鼠标拖拽**：用户可以使用鼠标随意拖拽图例到任意位置。
+*   **右侧锚定**：当调整窗口宽度时，图例会自动移动，以保持与右侧边框的相对距离不变（类似 Matlab 的行为）。
+*   **紧凑布局**：图例采用垂直列表布局，且高度会根据内容自适应，不会占用多余空间。
+*   **样式**：默认提供白色背景和黑色边框，确保图例清晰可见。
+
 ---
 
 ## 3. 样式定制

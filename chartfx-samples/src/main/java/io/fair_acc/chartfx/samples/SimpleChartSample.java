@@ -40,6 +40,7 @@ public class SimpleChartSample extends Application {
         xAxis.setAutoRangeRounding(true); // Round to tick unit
         xAxis.setAutoRangePadding(0.1);   // 10% padding
         // xAxis.setAutoRangeClampToZero(false); // default is false, allows padding to cross zero
+        xAxis.setMinorTickVisible(false);
 
         // Option: Force fixed tick unit
         // xAxis.setAutoTickUnit(false);

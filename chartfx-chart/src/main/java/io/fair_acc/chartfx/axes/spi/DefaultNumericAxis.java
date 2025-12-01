@@ -57,6 +57,16 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
         }
     };
 
+    private final transient BooleanProperty autoRangeClampToZero = new SimpleBooleanProperty(this, "autoRangeClampToZero", false) {
+        @Override
+        protected void invalidated() {
+            if (isAutoRanging() || isAutoGrowRanging()) {
+                invalidate();
+                requestAxisLayout();
+            }
+        }
+    };
+
     protected boolean isLogAxis = false; // internal use (for performance reason
 
     private final transient BooleanProperty logAxis = new SimpleBooleanProperty(this, "logAxis", isLogAxis) {
@@ -187,6 +197,18 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
     }
 
     /**
+     * If true, the auto-range will be clamped to zero if the data range does not cross zero.
+     * <p>
+     * <b>Default value: {@code false}</b>
+     * </p>
+     *
+     * @return autoRangeClampToZero property
+     */
+    public BooleanProperty autoRangeClampToZeroProperty() {
+        return autoRangeClampToZero;
+    }
+
+    /**
      * Gets the transformation (linear, logarithmic, etc) applied to the values of this axis.
      *
      * @return the axis transformation
@@ -275,6 +297,15 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
     }
 
     /**
+     * Returns the value of the {@link #autoRangeClampToZeroProperty()}.
+     *
+     * @return value of the autoRangeClampToZero property
+     */
+    public boolean isAutoRangeClampToZero() {
+        return autoRangeClampToZeroProperty().get();
+    }
+
+    /**
      * Returns the value of the {@link #logAxisProperty()}.
      *
      * @return value of the logAxis property
@@ -333,6 +364,15 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      */
     public void setForceZeroInRange(final boolean value) {
         forceZeroInRangeProperty().setValue(value);
+    }
+
+    /**
+     * Sets the value of the {@link #autoRangeClampToZeroProperty()}.
+     *
+     * @param value if {@code true}, auto-range will be clamped to zero
+     */
+    public void setAutoRangeClampToZero(final boolean value) {
+        autoRangeClampToZeroProperty().set(value);
     }
 
     /**
@@ -416,10 +456,18 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
         final double max = maxValue < 0 && isForceZeroInRange() ? 0 : maxValue;
         final double padding = DefaultNumericAxis.getEffectiveRange(min, max) * getAutoRangePadding();
         final double paddingScale = 1.0 + getAutoRangePadding();
-        final double paddedMin = isLogAxis ? minValue / paddingScale
-                                           : DefaultNumericAxis.clampBoundToZero(min - padding, min);
-        final double paddedMax = isLogAxis ? maxValue * paddingScale
-                                           : DefaultNumericAxis.clampBoundToZero(max + padding, max);
+        final double paddedMin;
+        if (isLogAxis) {
+            paddedMin = minValue / paddingScale;
+        } else {
+            paddedMin = isAutoRangeClampToZero() ? DefaultNumericAxis.clampBoundToZero(min - padding, min) : min - padding;
+        }
+        final double paddedMax;
+        if (isLogAxis) {
+            paddedMax = maxValue * paddingScale;
+        } else {
+            paddedMax = isAutoRangeClampToZero() ? DefaultNumericAxis.clampBoundToZero(max + padding, max) : max + padding;
+        }
 
         return computeRange(paddedMin, paddedMax, length, labelSize);
     }

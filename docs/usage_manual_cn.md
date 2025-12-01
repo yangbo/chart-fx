@@ -172,6 +172,38 @@ axis.setMinorTickCount(0);
 axis.setMaxMajorTickLabelCount(5);
 ```
 
+### 2.6 自动范围与留白配置
+
+在自动范围模式下，您可以控制坐标轴两端的留白以及是否将范围取整到刻度。
+
+#### 2.6.1 设置留白与取整
+
+```java
+// 启用自动范围（默认开启）
+axis.setAutoRanging(true);
+
+// 开启取整模式：范围边界会自动扩展到刻度的倍数
+axis.setAutoRangeRounding(true);
+
+// 设置留白比例：0.1 表示在数据范围的基础上左右各扩展 10%
+axis.setAutoRangePadding(0.1);
+```
+
+#### 2.6.2 允许跨越零点 (autoRangeClampToZero)
+
+默认情况下，ChartFX 会允许自动范围跨越零点（例如，即使数据从 0 开始，如果有留白，轴可能会从负数开始）。这是由 `autoRangeClampToZero` 属性控制的。
+
+*   **默认行为 (`false`)**：允许跨越零点。如果设置了 padding，轴的最小值可能会小于 0，从而实现左侧留白。
+*   **限制行为 (`true`)**：如果数据在零的一侧（例如全部为正），轴的范围会被强制限制在 0，不会跨越到负数。
+
+```java
+// 允许跨越零点（默认值），实现左右对称留白
+axis.setAutoRangeClampToZero(false);
+
+// 强制限制在零点，不显示负数刻度（如果数据全为正）
+axis.setAutoRangeClampToZero(true);
+```
+
 ---
 
 ## 3. 样式定制

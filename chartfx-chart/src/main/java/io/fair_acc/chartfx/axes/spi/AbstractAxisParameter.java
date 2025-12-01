@@ -270,6 +270,15 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
     });
 
     /** The axis unit label */
+    private final transient BooleanProperty autoTickUnit = new SimpleBooleanProperty(this, "autoTickUnit", true) {
+        @Override
+        protected void invalidated() {
+            invalidate();
+            invokeListener(new AxisChangeEvent(AbstractAxisParameter.this));
+        }
+    };
+
+    /** The axis unit label */
     private final transient BooleanProperty autoUnitScaling = new SimpleBooleanProperty(this, "autoUnitScaling", false) {
         @Override
         protected void invalidated() {
@@ -467,6 +476,11 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
     @Override
     public BooleanProperty autoRangingProperty() {
         return autoRanging;
+    }
+
+    @Override
+    public BooleanProperty autoTickUnitProperty() {
+        return autoTickUnit;
     }
 
     @Override
@@ -805,6 +819,11 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
     }
 
     @Override
+    public boolean isAutoTickUnit() {
+        return autoTickUnitProperty().get();
+    }
+
+    @Override
     public boolean isAutoUnitScaling() {
         return autoUnitScalingProperty().get();
     }
@@ -994,6 +1013,11 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
     @Override
     public void setAutoRanging(final boolean value) {
         autoRangingProperty().set(value);
+    }
+
+    @Override
+    public void setAutoTickUnit(final boolean value) {
+        autoTickUnitProperty().set(value);
     }
 
     @Override

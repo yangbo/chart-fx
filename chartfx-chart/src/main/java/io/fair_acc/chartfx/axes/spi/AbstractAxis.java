@@ -381,7 +381,7 @@ public abstract class AbstractAxis extends AbstractAxisParameter implements Axis
     public void recomputeTickMarks() {
         final double axisLength = getSide().isVertical() ? getHeight() : getWidth(); // [pixel]
         final var newAxisRange = getRange();
-        final double mTickUnit = computePreferredTickUnit(axisLength);
+        final double mTickUnit = isAutoTickUnit() ? computePreferredTickUnit(axisLength) : getTickUnit();
         if (getRange().getMin() != getMin() || getRange().getMax() != getMax()) {
             set(getRange().getMin(), getRange().getMax());
         }
@@ -1152,7 +1152,7 @@ public abstract class AbstractAxis extends AbstractAxisParameter implements Axis
 
         // we have done all auto calcs, let Axis position major tickmarks
         final double preferredTickUnit = computePreferredTickUnit(axisLength);
-        final boolean tickUnitDiffers = getTickUnit() != preferredTickUnit;
+        final boolean tickUnitDiffers = isAutoTickUnit() && (getTickUnit() != preferredTickUnit);
         final boolean lengthDiffers = oldAxisLength != axisLength;
         final boolean rangeDiffers = oldAxisMin != getMin() || oldAxisMax != getMax() || oldTickUnit != getTickUnit();
         var recomputedTicks = false;

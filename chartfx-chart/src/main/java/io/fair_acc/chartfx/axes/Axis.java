@@ -36,7 +36,14 @@ public interface Axis extends AxisDescription {
     BooleanProperty autoRangingProperty();
 
     /**
-     * @return {@code true} -&gt; scale to the nearest SI unit prefix
+     * This is true when the axis determines its tick unit automatically
+     *
+     * @return property
+     */
+    BooleanProperty autoTickUnitProperty();
+
+    /**
+     * @return {@code true} -> scale to the nearest SI unit prefix
      */
     BooleanProperty autoUnitScalingProperty();
 
@@ -220,6 +227,13 @@ public interface Axis extends AxisDescription {
     boolean isAutoRanging();
 
     /**
+     * This is true when the axis determines its tick unit automatically
+     *
+     * @return true if axis tick unit shall be updated automatically
+     */
+    boolean isAutoTickUnit();
+
+    /**
      * @return whether unit is automatically adjusted to multiples of 1e3 (kilo, mega, ...) or 1e-3 (milli, micro, ...)
      */
     boolean isAutoUnitScaling();
@@ -291,7 +305,14 @@ public interface Axis extends AxisDescription {
     void setAutoRanging(boolean value);
 
     /**
-     * @param value scaling value {@code true} -&gt; scale to the nearest SI unit prefix
+     * This is true when the axis determines its tick unit automatically
+     *
+     * @param value true if axis tick unit shall be updated automatically
+     */
+    void setAutoTickUnit(boolean value);
+
+    /**
+     * @param value scaling value {@code true} -> scale to the nearest SI unit prefix
      */
     void setAutoUnitScaling(final boolean value);
 

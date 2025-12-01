@@ -34,7 +34,15 @@ public class SimpleChartSample extends Application {
         yAxis.setAutoRanging(true); // default: true
         yAxis.setAutoRangePadding(0.5); // here: 50% padding on top and bottom of axis
 
-        final XYChart chart = new XYChart(new DefaultNumericAxis(), yAxis);
+        // Example: manually setting tick unit for X-Axis
+        final DefaultNumericAxis xAxis = new DefaultNumericAxis("X Axis");
+        xAxis.setAutoTickUnit(true);
+        xAxis.setMaxMajorTickLabelCount(10);
+        // xAxis.setTickUnit(10.0);
+        // 您也可以结合使用现有的 setMaxMajorTickLabelCount 和 setMinorTickVisible 来达到您想要的视觉效果。
+        xAxis.setMinorTickVisible(false);
+
+        final XYChart chart = new XYChart(xAxis, yAxis);
         chart.setLegendVisible(false); // 隐藏默认图例
         chart.setPadding(new Insets(10)); // 设置图表内边距
         chart.setChartBorderVisible(true); // 显示图表边框

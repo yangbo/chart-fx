@@ -10,6 +10,9 @@
 
 选择 **releaseTelecwin** profile 然后执行 **deploy** 阶段。
 
+需要用 JDK15，在 cmd 中执行，如果是 powershell 那么参数要加双引号。
+
+    mvn "-Dmaven.test.skip=true" -PreleaseTelecwin deploy
 
 maven 教程
 ==============================================

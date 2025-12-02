@@ -12,6 +12,7 @@
 
 需要用 JDK15，在 cmd 中执行，如果是 powershell 那么参数要加双引号。
 
+    set JAVA_HOME=c:\\java\\openjdk-15
     mvn "-Dmaven.test.skip=true" -PreleaseTelecwin clean deploy
 
 maven 教程

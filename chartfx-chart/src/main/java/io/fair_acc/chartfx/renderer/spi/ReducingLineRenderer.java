@@ -18,10 +18,12 @@ import javafx.scene.canvas.GraphicsContext;
 
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
+import io.fair_acc.chartfx.utils.StyleParser;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
 
@@ -32,6 +34,7 @@ import io.fair_acc.dataset.utils.ProcessingProfiler;
  */
 public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLineRenderer> implements Renderer {
     private int maxPoints;
+    private boolean drawChartDataSets = true;
 
     public ReducingLineRenderer() {
         maxPoints = 300;
@@ -43,7 +46,25 @@ public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLine
 
     @Override
     public Canvas drawLegendSymbol(DataSet dataSet, int dsIndex, int width, int height) {
-        return null; // not implemented for this class
+        final Canvas canvas = new Canvas(width, height);
+        final GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        final String style = dataSet.getStyle();
+        final Integer layoutOffset = StyleParser.getIntegerPropertyValue(style, XYChartCss.DATASET_LAYOUT_OFFSET);
+        final Integer dsIndexLocal = StyleParser.getIntegerPropertyValue(style, XYChartCss.DATASET_INDEX);
+
+        final int dsLayoutIndexOffset = layoutOffset == null ? 0 : layoutOffset;
+        final int plottingIndex = dsLayoutIndexOffset + (dsIndexLocal == null ? dsIndex : dsIndexLocal);
+
+        gc.save();
+        DefaultRenderColorScheme.setLineScheme(gc, dataSet.getStyle(), plottingIndex);
+        DefaultRenderColorScheme.setGraphicsContextAttributes(gc, dataSet.getStyle());
+
+        final double y = height / 2.0;
+        gc.strokeLine(1, y, width - 2.0, y);
+
+        gc.restore();
+        return canvas;
     }
 
     public int getMaxPoints() {
@@ -67,7 +88,7 @@ public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLine
         final XYChart xyChart = (XYChart) chart;
 
         // make local copy and add renderer specific data sets
-        final List<DataSet> localDataSetList = new ArrayList<>(datasets);
+        final List<DataSet> localDataSetList = drawChartDataSets ? new ArrayList<>(datasets) : new ArrayList<>();
         localDataSetList.addAll(super.getDatasets());
 
         final long start = ProcessingProfiler.getTimeStamp();
@@ -167,5 +188,13 @@ public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLine
 
     public void setMaxPoints(final int maxPoints) {
         this.maxPoints = maxPoints;
+    }
+
+    public void setDrawChartDataSets(final boolean state) {
+        drawChartDataSets = state;
+    }
+
+    public boolean isDrawChartDataSets() {
+        return drawChartDataSets;
     }
 }

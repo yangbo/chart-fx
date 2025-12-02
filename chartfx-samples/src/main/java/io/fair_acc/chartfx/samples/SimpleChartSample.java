@@ -56,6 +56,7 @@ public class SimpleChartSample extends Application {
 
         final DoubleDataSet dataSet1 = new DoubleDataSet("data set #1");
         final DoubleDataSet dataSet2 = new DoubleDataSet("data set #2");
+        final DoubleDataSet dataSet3 = new DoubleDataSet("data set #3");
 
         // some custom listeners (optional)
         dataSet1.addListener(evt -> LOGGER.atInfo().log("dataSet1 - event: " + evt.toString()));
@@ -70,8 +71,9 @@ public class SimpleChartSample extends Application {
         yAxis2.setAutoRanging(true);
 
         final ReducingLineRenderer renderer2 = new ReducingLineRenderer();
+        renderer2.setDrawChartDataSets(false);
         renderer2.getAxes().add(yAxis2);
-        renderer2.getDatasets().add(dataSet2);
+        renderer2.getDatasets().add(dataSet3);
         chart.getRenderers().add(renderer2);
 
         final double[] xValues = new double[N_SAMPLES];
@@ -81,9 +83,11 @@ public class SimpleChartSample extends Application {
             final double x = n;
             final double y1 = Math.cos(Math.toRadians(10.0 * n));
             final double y2 = Math.sin(Math.toRadians(10.0 * n));
+            final double y3 = Math.sin(Math.toRadians(12.0 * n));
             xValues[n] = x;
             yValues1[n] = y1;
             dataSet2.add(n, y2); // style #1 how to set data, notifies re-draw for every 'add'
+            dataSet3.add(n, y3);
         }
         dataSet1.set(xValues, yValues1); // style #2 how to set data, notifies once per set
         // to manually trigger an update (optional):

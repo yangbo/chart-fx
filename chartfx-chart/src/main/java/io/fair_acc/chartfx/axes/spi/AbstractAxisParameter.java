@@ -1249,11 +1249,11 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
         }
 
         final String axisPrefix = MetricPrefix.getShortPrefix(getUnitScaling());
-        if ((localAxisUnit == null || localAxisUnit.isBlank()) && !axisPrefix.isBlank()) {
+        if (localAxisUnit == null) {
             localAxisUnit = "";
         }
 
-        if (localAxisUnit == null) {
+        if (localAxisUnit.isBlank() && axisPrefix.isBlank()) {
             getAxisLabel().setText(axisPrimaryLabel);
         } else {
             getAxisLabel().setText(axisPrimaryLabel + " [" + axisPrefix + localAxisUnit + "]");

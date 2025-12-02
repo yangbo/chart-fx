@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -70,8 +71,8 @@ public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLine
         localDataSetList.addAll(super.getDatasets());
 
         final long start = ProcessingProfiler.getTimeStamp();
-        final Axis xAxis = xyChart.getXAxis();
-        final Axis yAxis = xyChart.getYAxis();
+        final Axis xAxis = getFirstAxis(Orientation.HORIZONTAL, xyChart);
+        final Axis yAxis = getFirstAxis(Orientation.VERTICAL, xyChart);
 
         final double xAxisWidth = xAxis.getWidth();
         final double xmin = xAxis.getValueForDisplay(0);

@@ -16,6 +16,8 @@ import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.CrosshairIndicator;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.renderer.spi.ReducingLineRenderer;
+import io.fair_acc.chartfx.ui.geometry.Side;
 import io.fair_acc.dataset.event.UpdatedDataEvent;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 
@@ -58,9 +60,19 @@ public class SimpleChartSample extends Application {
         // some custom listeners (optional)
         dataSet1.addListener(evt -> LOGGER.atInfo().log("dataSet1 - event: " + evt.toString()));
         dataSet2.addListener(evt -> LOGGER.atInfo().log("dataSet2 - event: " + evt.toString()));
+        // 使用默认的 render
+         chart.getDatasets().add(dataSet1);      // for single data set
+         chart.getDatasets().add(dataSet2);         // for two data sets
 
-        // chart.getDatasets().add(dataSet1); // for single data set
-        chart.getDatasets().addAll(dataSet1, dataSet2); // for two data sets
+        // 添加第二个Y轴和对应的Renderer
+        final DefaultNumericAxis yAxis2 = new DefaultNumericAxis("Right Y Axis");
+        yAxis2.setSide(Side.RIGHT);
+        yAxis2.setAutoRanging(true);
+
+        final ReducingLineRenderer renderer2 = new ReducingLineRenderer();
+        renderer2.getAxes().add(yAxis2);
+        renderer2.getDatasets().add(dataSet2);
+        chart.getRenderers().add(renderer2);
 
         final double[] xValues = new double[N_SAMPLES];
         final double[] yValues1 = new double[N_SAMPLES];

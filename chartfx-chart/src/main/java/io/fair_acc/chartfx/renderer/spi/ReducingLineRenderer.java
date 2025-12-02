@@ -120,8 +120,14 @@ public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLine
                 }
 
                 gc.save();
-                DefaultRenderColorScheme.setLineScheme(gc, ds.getStyle(), lindex);
-                DefaultRenderColorScheme.setGraphicsContextAttributes(gc, ds.getStyle());
+                final String style = ds.getStyle();
+                final Integer layoutOffset = StyleParser.getIntegerPropertyValue(style, XYChartCss.DATASET_LAYOUT_OFFSET);
+                final Integer dsIndexLocal = StyleParser.getIntegerPropertyValue(style, XYChartCss.DATASET_INDEX);
+                final int dsLayoutIndexOffset = layoutOffset == null ? 0 : layoutOffset;
+                final int plottingIndex = dsLayoutIndexOffset + (dsIndexLocal == null ? dataSetOffset + lindex : dsIndexLocal);
+
+                DefaultRenderColorScheme.setLineScheme(gc, style, plottingIndex);
+                DefaultRenderColorScheme.setGraphicsContextAttributes(gc, style);
                 if (ds.getDataCount() > 0) {
                     final int indexMin = Math.max(0, ds.getIndex(DIM_X, xmin));
                     final int indexMax = Math.min(ds.getIndex(DIM_X, xmax) + 1, ds.getDataCount());

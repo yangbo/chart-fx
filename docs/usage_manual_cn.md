@@ -268,3 +268,15 @@ chart.getRenderers().add(renderer2);
     /* 设置边框宽度为 1 像素 */
     -fx-stroke-width: 1px;
 }
+```
+
+## 4. Latex 支持
+
+目前 X、Y 轴的名称不支持使用 LaTex 公式，但对于简单的数学符号（如上标、下标、希腊字母），您可以使用 Unicode 字符。
+例如：
+
+平方：x² (Unicode \u00B2)
+微米：µm (Unicode \u00B5)
+阿尔法：α (Unicode \u03B1)
+温度：℃
+

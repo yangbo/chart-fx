@@ -204,6 +204,52 @@ axis.setAutoRangeClampToZero(false);
 axis.setAutoRangeClampToZero(true);
 ```
 
+### 2.7 多坐标轴与多渲染器配置
+
+ChartFX 支持在同一个图表上显示多个坐标轴（例如左侧和右侧 Y 轴），并支持使用多个渲染器来分别控制不同数据集的绘制。
+
+#### 2.7.1 添加右侧 Y 轴
+
+要使用右侧 Y 轴，您需要创建一个新的坐标轴对象，并将其侧边属性设置为 `Side.RIGHT`。
+
+```java
+import io.fair_acc.chartfx.ui.geometry.Side;
+
+// 创建右侧 Y 轴
+final DefaultNumericAxis yAxisRight = new DefaultNumericAxis("Right Y Axis");
+yAxisRight.setSide(Side.RIGHT);
+yAxisRight.setAutoRanging(true); // 同样支持自动范围
+```
+
+#### 2.7.2 使用特定的渲染器
+
+为了让某些数据集显示在特定的轴上（例如右侧 Y 轴），或者为了使用不同的渲染效果（例如无误差线的折线图），您需要创建一个新的渲染器实例，并将轴和数据集绑定到它上面。
+
+`ReducingLineRenderer` 是一个高性能的无误差线渲染器。
+
+```java
+import io.fair_acc.chartfx.renderer.spi.ReducingLineRenderer;
+
+// 创建一个新的渲染器
+final ReducingLineRenderer renderer2 = new ReducingLineRenderer();
+
+// 1. 绑定右侧 Y 轴（必须在添加到 Chart 之前设置）
+renderer2.getAxes().add(yAxisRight);
+
+// 2. 添加专属的数据集
+renderer2.getDatasets().add(dataSet2);
+
+// 3. 配置渲染器不绘制图表的主数据集（避免重复绘制）
+// ReducingLineRenderer 默认会绘制 Chart 中所有的主数据集。
+// 如果您只想让它绘制自己列表中的数据集，需要关闭此选项。
+renderer2.setDrawChartDataSets(false);
+
+// 4. 将渲染器添加到图表
+chart.getRenderers().add(renderer2);
+```
+
+**注意**：如果不设置 `setDrawChartDataSets(false)`，`renderer2` 可能会同时绘制 Chart 的主数据集（通常显示在左侧轴）和它自己的数据集，导致左侧轴的数据被错误地在右侧轴上再次绘制一遍。
+
 ---
 
 ## 3. 样式定制

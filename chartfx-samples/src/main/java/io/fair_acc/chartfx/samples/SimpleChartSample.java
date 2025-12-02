@@ -35,6 +35,8 @@ public class SimpleChartSample extends Application {
         final DefaultNumericAxis yAxis = new DefaultNumericAxis();
         yAxis.setAutoRanging(true); // default: true
         yAxis.setAutoRangePadding(0.5); // here: 50% padding on top and bottom of axis
+        yAxis.setAutoRangeRounding(true);
+        yAxis.setMinorTickVisible(false);
 
         // Example: X-Axis with padding and rounding (allowing zero crossing)
         final DefaultNumericAxis xAxis = new DefaultNumericAxis("X Axis");
@@ -69,6 +71,9 @@ public class SimpleChartSample extends Application {
         final DefaultNumericAxis yAxis2 = new DefaultNumericAxis("Right Y Axis");
         yAxis2.setSide(Side.RIGHT);
         yAxis2.setAutoRanging(true);
+        yAxis2.setAutoRangePadding(0.5);
+        yAxis2.setAutoRangeRounding(true);
+        yAxis2.setMinorTickVisible(false);
 
         final ReducingLineRenderer renderer2 = new ReducingLineRenderer();
         renderer2.setDrawChartDataSets(false);

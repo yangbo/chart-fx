@@ -1,8 +1,7 @@
-package io.fair_acc.chartfx.samples;
+package io.fair_acc.chartfx.plugins;
 
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.legend.spi.DefaultLegend;
-import io.fair_acc.chartfx.plugins.ChartPlugin;
 import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.dataset.DataSet;
 import javafx.application.Platform;

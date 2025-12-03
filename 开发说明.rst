@@ -15,6 +15,12 @@
     set JAVA_HOME=c:\\java\\openjdk-15
     mvn "-Dmaven.test.skip=true" -PreleaseTelecwin clean deploy
 
+powershell：
+
+    $env:JAVA_HOME = 'c:\java\openjdk-15'
+    $env:Path = "$env:JAVA_HOME\bin;$env:Path"
+    mvn "-Dmaven.test.skip=true" -PreleaseTelecwin clean deploy
+
 maven 教程
 ==============================================
 
